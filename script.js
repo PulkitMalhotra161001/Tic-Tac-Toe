@@ -65,9 +65,15 @@ function minimax(newBoard, player) {
   }
   var moves = [];
   for (var i = 0; i < availSpots.length; i++) {
+    //create an object for each and store the index of that spot
     var move = {};
     move.index = newBoard[availSpots[i]];
+
+    // set the empty spot to the current player
     newBoard[availSpots[i]] = player;
+
+    /*collect the score resulted from calling minimax 
+      on the opponent of the current player*/
     if (player == computer) {
       var result = minimax(newBoard, human);
       move.score = result.score;
@@ -75,9 +81,15 @@ function minimax(newBoard, player) {
       var result = minimax(newBoard, computer);
       move.score = result.score;
     }
+
+    // reset the spot to empty
     newBoard[availSpots[i]] = move.index;
+
+    // push the object to the array
     moves.push(move);
   }
+
+  // if it is the computer's turn loop over the moves and choose the move with the highest score
   var bestMove;
   if (player === computer) {
     var bestScore = -10000;
@@ -88,6 +100,7 @@ function minimax(newBoard, player) {
       }
     }
   } else {
+    // else loop over the moves and choose the move with the lowest score
     var bestScore = 10000;
     for (var i = 0; i < moves.length; i++) {
       if (moves[i].score < bestScore) {
@@ -96,6 +109,8 @@ function minimax(newBoard, player) {
       }
     }
   }
+
+  // return the chosen move (object) from the moves array
   return moves[bestMove];
 }
 
