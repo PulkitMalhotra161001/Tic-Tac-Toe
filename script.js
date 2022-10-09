@@ -70,6 +70,7 @@ function minimax(newBoard, player) {
 
     // alpha beta pruning
     // means if the computer win position is found then no need to check for other positions
+    // https://www.youtube.com/watch?v=l-hh51ncgDI&t=604s
     var prune = false;
     move.index = newBoard[availSpots[i]];
 
