@@ -67,6 +67,10 @@ function minimax(newBoard, player) {
   for (var i = 0; i < availSpots.length; i++) {
     //create an object for each and store the index of that spot
     var move = {};
+
+    // alpha beta pruning
+    // means if the computer win position is found then no need to check for other positions
+    var prune = false;
     move.index = newBoard[availSpots[i]];
 
     // set the empty spot to the current player
@@ -77,9 +81,11 @@ function minimax(newBoard, player) {
     if (player == computer) {
       var result = minimax(newBoard, human);
       move.score = result.score;
+      if (result.score == 1) prune = true;
     } else {
       var result = minimax(newBoard, computer);
       move.score = result.score;
+      if (result.score == -1) prune = true;
     }
 
     // reset the spot to empty
@@ -87,13 +93,17 @@ function minimax(newBoard, player) {
 
     // push the object to the array
     moves.push(move);
+
+    // best case already found
+    if (prune) break;
   }
 
   // if it is the computer's turn loop over the moves and choose the move with the highest score
   var bestMove;
   if (player === computer) {
-    var bestScore = -10000;
+    var bestScore = -10;
     for (var i = 0; i < moves.length; i++) {
+      // console.log(availSpots.length + " " + moves[i].score);
       if (moves[i].score > bestScore) {
         bestScore = moves[i].score;
         bestMove = i;
@@ -101,7 +111,7 @@ function minimax(newBoard, player) {
     }
   } else {
     // else loop over the moves and choose the move with the lowest score
-    var bestScore = 10000;
+    var bestScore = 10;
     for (var i = 0; i < moves.length; i++) {
       if (moves[i].score < bestScore) {
         bestScore = moves[i].score;
